@@ -1,5 +1,6 @@
 package com.gearup.controller;
 
+import com.gearup.exceptions.UserException;
 import com.gearup.model.User;
 import com.gearup.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class UserController {
         if(otp.isPresent()){
             return  otp.get();
         }
-        throw new Exception("user not found");
+        throw new UserException("user not found");
     }
 
     @PutMapping("/api/users/{id}")
@@ -39,7 +40,7 @@ public class UserController {
                            @PathVariable Long id) throws Exception {
         Optional<User> otp = userRepository.findById(id);
         if(otp.isEmpty()) {
-            throw new Exception("user not found with id" + id);
+            throw new UserException("user not found with id" + id);
         }
         User existingUser = otp.get();
 
@@ -55,7 +56,7 @@ public class UserController {
     public String deleteUserById(@PathVariable Long id) throws Exception {
         Optional<User> otp = userRepository.findById(id);
         if(otp.isEmpty()) {
-            throw new Exception("user not found with id" + id);
+            throw new UserException("user not found with id" + id);
         }
         userRepository.deleteById(otp.get().getId());
         return "User deleted";
