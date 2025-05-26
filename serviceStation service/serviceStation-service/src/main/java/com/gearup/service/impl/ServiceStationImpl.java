@@ -33,8 +33,20 @@ public class ServiceStationImpl implements ServiceStation {
     }
 
     @Override
-    public serviceStation updateStation(StationDTO station, UserDTO user, Long stationId) {
-        return null;
+    public serviceStation updateStation(StationDTO station, UserDTO user, Long stationId) throws Exception {
+        serviceStation existingStation = stationRepository.findById(stationId).orElse(null);
+        if(existingStation != null && station.getOwnerId().equals(user.getId())) {
+            existingStation.setName(station.getName());
+            existingStation.setAddress(station.getAddress());
+            existingStation.setEmail(station.getEmail());
+            existingStation.setCity(station.getCity());
+            existingStation.setImages(station.getImages());
+            existingStation.setOwnerId(station.getOwnerId());
+            existingStation.setOpenTime(station.getOpenTime());
+            existingStation.setCloseTime(station.getCloseTime());
+            existingStation.setPhoneNumber(station.getPhoneNumber());
+        }
+        throw new Exception("Service Station not exist");
     }
 
     @Override
