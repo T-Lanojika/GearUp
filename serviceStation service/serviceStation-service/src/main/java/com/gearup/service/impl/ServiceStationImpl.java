@@ -65,11 +65,11 @@ public class ServiceStationImpl implements ServiceStation {
 
     @Override
     public serviceStation getStationByOwnerId(Long ownerId) {
-        return null;
+        return stationRepository.findByOwnerId(ownerId);
     }
 
     @Override
     public List<serviceStation> searchStationByCity(String city) {
-        return List.of();
+        return stationRepository.searchStations(city);
     }
 }
