@@ -3,16 +3,33 @@ package com.gearup.service.impl;
 import com.gearup.model.serviceStation;
 import com.gearup.payload.dto.StationDTO;
 import com.gearup.payload.dto.UserDTO;
+import com.gearup.repository.StationRepository;
 import com.gearup.service.ServiceStation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ServiceStationImpl implements ServiceStation {
+
+    private final StationRepository stationRepository;
+
     @Override
-    public serviceStation createStation(StationDTO station, UserDTO user) {
-        return null;
+    public serviceStation createStation(StationDTO req, UserDTO user) {
+        serviceStation station = new serviceStation();
+        station.setName(req.getName());
+        station.setAddress(req.getAddress());
+        station.setEmail(req.getEmail());
+        station.setCity(req.getCity());
+        station.setImages(req.getImages());
+        station.setOwnerId(req.getOwnerId());
+        station.setOpenTime(req.getOpenTime());
+        station.setCloseTime(req.getCloseTime());
+        station.setPhoneNumber(req.getPhoneNumber());
+
+        return stationRepository.save(station);
     }
 
     @Override
