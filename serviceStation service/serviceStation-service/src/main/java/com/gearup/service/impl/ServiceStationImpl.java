@@ -51,12 +51,16 @@ public class ServiceStationImpl implements ServiceStation {
 
     @Override
     public List<serviceStation> getAllStations() {
-        return List.of();
+        return stationRepository.findAll();
     }
 
     @Override
-    public serviceStation getStationById(Long stationId) {
-        return null;
+    public serviceStation getStationById(Long stationId) throws Exception {
+        serviceStation station = stationRepository.findById(stationId).orElse(null);
+        if(station == null){
+            throw new Exception("Service Station not exist");
+        }
+        return station;
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface ServiceStation {
 
     List<serviceStation> getAllStations();
 
-    serviceStation getStationById(Long stationId);
+    serviceStation getStationById(Long stationId) throws Exception;
 
     serviceStation getStationByOwnerId(Long ownerId);
 
