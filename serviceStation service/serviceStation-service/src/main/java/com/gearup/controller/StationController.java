@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/serviceStations")
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class StationController {
         StationDTO stationDTO1= StationMapper.mapToDTO(station);
         return ResponseEntity.ok(stationDTO1);
     }
+
     @PatchMapping
     public ResponseEntity<StationDTO> updateStation(
             @PathVariable("id") Long stationId,
@@ -34,4 +37,31 @@ public class StationController {
         StationDTO stationDTO1= StationMapper.mapToDTO(station);
         return ResponseEntity.ok(stationDTO1);
     }
+
+    @GetMapping
+    public ResponseEntity<List<StationDTO>> getStation() throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(1L);
+        List<serviceStation> stations = servicestation.getAllStations();
+
+        List<StationDTO> stationDTOS= stations.stream().map((station)->{
+            StationDTO stationDTO= StationMapper.mapToDTO(station);
+            return stationDTO;
+                }
+
+        ).toList();
+        return ResponseEntity.ok(stationDTOS);
+    }
+
+    @GetMapping("/{stationId}")
+    public ResponseEntity<StationDTO> getStationById(@PathVariable Long stationId) throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(1L);
+
+        serviceStation station = servicestation.getStationById(stationId);
+        StationDTO stationDTO= StationMapper.mapToDTO(station);
+
+        return ResponseEntity.ok(stationDTO);
+    }
+
 }
