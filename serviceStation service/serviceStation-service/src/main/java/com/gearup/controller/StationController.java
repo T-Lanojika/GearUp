@@ -53,6 +53,7 @@ public class StationController {
         return ResponseEntity.ok(stationDTOS);
     }
 
+    // http://localhost:5002/api/stations/5
     @GetMapping("/{stationId}")
     public ResponseEntity<StationDTO> getStationById(@PathVariable Long stationId) throws Exception {
         UserDTO userDTO = new UserDTO();
@@ -62,6 +63,22 @@ public class StationController {
         StationDTO stationDTO= StationMapper.mapToDTO(station);
 
         return ResponseEntity.ok(stationDTO);
+    }
+
+    // http://localhost:5002/api/stations/search?city=mumbai
+    @GetMapping("/search")
+    public ResponseEntity<List<StationDTO>> searchStations(@RequestParam("city") String city) throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(1L);
+        List<serviceStation> stations = servicestation.searchStationByCity(city);
+
+        List<StationDTO> stationDTOS= stations.stream().map((station)->{
+                    StationDTO stationDTO= StationMapper.mapToDTO(station);
+                    return stationDTO;
+                }
+
+        ).toList();
+        return ResponseEntity.ok(stationDTOS);
     }
 
 }
