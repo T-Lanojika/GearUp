@@ -33,6 +33,7 @@ public class StationController {
             @RequestBody StationDTO stationDTO) throws Exception {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(1L);
+
         serviceStation station = servicestation.updateStation(stationDTO,userDTO,stationId);
         StationDTO stationDTO1= StationMapper.mapToDTO(station);
         return ResponseEntity.ok(stationDTO1);
@@ -40,8 +41,7 @@ public class StationController {
 
     @GetMapping
     public ResponseEntity<List<StationDTO>> getStation() throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(1L);
+
         List<serviceStation> stations = servicestation.getAllStations();
 
         List<StationDTO> stationDTOS= stations.stream().map((station)->{
@@ -56,8 +56,6 @@ public class StationController {
     // http://localhost:5002/api/stations/5
     @GetMapping("/{stationId}")
     public ResponseEntity<StationDTO> getStationById(@PathVariable Long stationId) throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(1L);
 
         serviceStation station = servicestation.getStationById(stationId);
         StationDTO stationDTO= StationMapper.mapToDTO(station);
@@ -68,8 +66,7 @@ public class StationController {
     // http://localhost:5002/api/stations/search?city=mumbai
     @GetMapping("/search")
     public ResponseEntity<List<StationDTO>> searchStations(@RequestParam("city") String city) throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(1L);
+
         List<serviceStation> stations = servicestation.searchStationByCity(city);
 
         List<StationDTO> stationDTOS= stations.stream().map((station)->{
@@ -79,6 +76,18 @@ public class StationController {
 
         ).toList();
         return ResponseEntity.ok(stationDTOS);
+    }
+
+    // http://localhost:5002/api/stations/5
+    @GetMapping("/owner")
+    public ResponseEntity<StationDTO> getStationByOwnerId(@PathVariable Long stationId) throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(1L);
+
+        serviceStation station = servicestation.getStationByOwnerId(userDTO.getId());
+        StationDTO stationDTO= StationMapper.mapToDTO(station);
+
+        return ResponseEntity.ok(stationDTO);
     }
 
 }
