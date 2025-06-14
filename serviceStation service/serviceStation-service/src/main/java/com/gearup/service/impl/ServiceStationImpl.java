@@ -24,7 +24,7 @@ public class ServiceStationImpl implements ServiceStation {
         station.setEmail(req.getEmail());
         station.setCity(req.getCity());
         station.setImages(req.getImages());
-        station.setOwnerId(req.getOwnerId());
+        station.setOwnerId(user.getId());
         station.setOpenTime(req.getOpenTime());
         station.setCloseTime(req.getCloseTime());
         station.setPhoneNumber(req.getPhoneNumber());
@@ -45,6 +45,8 @@ public class ServiceStationImpl implements ServiceStation {
             existingStation.setOpenTime(station.getOpenTime());
             existingStation.setCloseTime(station.getCloseTime());
             existingStation.setPhoneNumber(station.getPhoneNumber());
+
+            return stationRepository.save(existingStation);
         }
         throw new Exception("Service Station not exist");
     }

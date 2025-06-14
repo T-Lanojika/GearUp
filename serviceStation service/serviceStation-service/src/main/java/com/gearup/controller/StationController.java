@@ -18,7 +18,7 @@ public class StationController {
 
     private final ServiceStation servicestation;
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<StationDTO> createStation(@RequestBody StationDTO stationDTO){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(1L);
@@ -27,7 +27,7 @@ public class StationController {
         return ResponseEntity.ok(stationDTO1);
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     public ResponseEntity<StationDTO> updateStation(
             @PathVariable("id") Long stationId,
             @RequestBody StationDTO stationDTO) throws Exception {

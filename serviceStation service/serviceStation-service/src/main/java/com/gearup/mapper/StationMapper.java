@@ -16,6 +16,7 @@ public class StationMapper {
         stationDTO.setOpenTime(station.getOpenTime());
         stationDTO.setPhoneNumber(station.getPhoneNumber());
         stationDTO.setOwnerId(station.getOwnerId());
+        stationDTO.setEmail(station.getEmail());
 
         return stationDTO;
     }
