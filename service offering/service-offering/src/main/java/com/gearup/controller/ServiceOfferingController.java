@@ -2,6 +2,7 @@ package com.gearup.controller;
 
 import com.gearup.model.ServiceOffering;
 import com.gearup.service.ServiceOfferingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +10,10 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/service-offering")
+@RequiredArgsConstructor
 public class ServiceOfferingController {
 
-    private ServiceOfferingService serviceOfferingService;
+    private final ServiceOfferingService serviceOfferingService;
 
     @GetMapping("/station/{stationId}")
     public ResponseEntity<Set<ServiceOffering>> getServiceByStationId(
