@@ -70,7 +70,7 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     }
 
     @Override
-    public Set<ServiceOffering> getServiceById(Set<Long> ids) {
+    public Set<ServiceOffering> getServicesByIds(Set<Long> ids) {
         List<ServiceOffering> services= serviceOfferingRepository.findAllById(ids);
 
         return new HashSet<>(services);
@@ -83,7 +83,6 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
 
         if(serviceOffering==null){
             throw new Exception("service not exist with id "+id);
-
         }
         return serviceOffering;
     }
