@@ -11,5 +11,5 @@ public interface CategoryService {
     Category saveCategory(Category category, StationDTO stationDTO);
     Set<Category> getAllCategoriesByStation(Long id);
     Category getCategoryById(Long id) throws Exception;
-    void deleteCategoryById(Long id);
+    void deleteCategoryById(Long id,Long stationId) throws Exception;
 }
