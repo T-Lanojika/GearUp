@@ -40,6 +40,7 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     @Override
     public ServiceOffering updateService(Long serviceId,
                                          ServiceOffering service) throws Exception {
+
         ServiceOffering serviceOffering = serviceOfferingRepository
                 .findById(serviceId).orElse(null);
 
@@ -73,5 +74,17 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
         List<ServiceOffering> services= serviceOfferingRepository.findAllById(ids);
 
         return new HashSet<>(services);
+    }
+
+    @Override
+    public ServiceOffering getServiceById(Long id) throws Exception {
+        ServiceOffering serviceOffering = serviceOfferingRepository
+                .findById(id).orElse(null);
+
+        if(serviceOffering==null){
+            throw new Exception("service not exist with id "+id);
+
+        }
+        return serviceOffering;
     }
 }
