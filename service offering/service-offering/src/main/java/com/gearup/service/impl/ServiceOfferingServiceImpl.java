@@ -4,13 +4,18 @@ import com.gearup.dto.CategoryDTO;
 import com.gearup.dto.ServiceDTO;
 import com.gearup.dto.StationDTO;
 import com.gearup.model.ServiceOffering;
+import com.gearup.repository.ServiceOfferingRepository;
 import com.gearup.service.ServiceOfferingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class ServiceOfferingServiceImpl implements ServiceOfferingService {
+
+    private final ServiceOfferingRepository serviceOfferingRepository;
 
     @Override
     public ServiceOffering createService(StationDTO stationDTO, ServiceDTO serviceDTO, CategoryDTO categoryDTO) {
