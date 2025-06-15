@@ -27,12 +27,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Set<Category> getAllCategoriesByStation(Long id) {
-        return Set.of();
+        return categoryRepository.findByStationId(id);
     }
 
     @Override
-    public Category getCategoryById(Long id) {
-        return null;
+    public Category getCategoryById(Long id) throws Exception {
+        Category category=categoryRepository.findById(id).orElse(null);
+
+        if(category == null){
+            throw new Exception("Category not exist with id" + id);
+        }
+        return category;
     }
 
     @Override
