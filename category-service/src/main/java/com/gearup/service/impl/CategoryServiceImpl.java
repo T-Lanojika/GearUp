@@ -17,7 +17,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category saveCategory(Category category, StationDTO stationDTO) {
-        return null;
+        Category newCategory = new Category();
+        newCategory.setName(category.getName());
+        newCategory.setStationId(category.getId());
+        newCategory.setImage(category.getImage());
+
+        return categoryRepository.save(newCategory);
     }
 
     @Override
