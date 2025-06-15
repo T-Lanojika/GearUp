@@ -21,6 +21,7 @@ public class StationCategoryController {
     ){
         StationDTO stationDTO = new StationDTO();
         stationDTO.setId(1L);
+
         Category savedCategory=categoryService.saveCategory(category,stationDTO);
 
         return ResponseEntity.ok(savedCategory);

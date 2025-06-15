@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category saveCategory(Category category, StationDTO stationDTO) {
         Category newCategory = new Category();
         newCategory.setName(category.getName());
-        newCategory.setStationId(category.getId());
+        newCategory.setStationId(stationDTO.getId());
         newCategory.setImage(category.getImage());
 
         return categoryRepository.save(newCategory);
@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategoryById(Long id,Long stationId) throws Exception {
         Category category = getCategoryById(id);
-        if(category.getStationId().equals(stationId)){
+        if(!category.getStationId().equals(stationId)){
             throw new Exception("You don't have permission to delete this category");
         }
         categoryRepository.deleteById(id);
