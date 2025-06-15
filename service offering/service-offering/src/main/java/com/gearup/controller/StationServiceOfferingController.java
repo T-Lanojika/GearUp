@@ -25,7 +25,7 @@ public class StationServiceOfferingController {
         stationDTO.setId(1L);
 
         CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setId(serviceDTO.getCategoryId());
+        categoryDTO.setId(serviceDTO.getCategory());
 
         ServiceOffering serviceOfferings = serviceOfferingService
                 .createService(stationDTO,serviceDTO,categoryDTO);
@@ -33,7 +33,7 @@ public class StationServiceOfferingController {
         return  ResponseEntity.ok(serviceOfferings);
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<ServiceOffering> updateService(
             @PathVariable Long id,
             @RequestBody ServiceOffering serviceOffering
