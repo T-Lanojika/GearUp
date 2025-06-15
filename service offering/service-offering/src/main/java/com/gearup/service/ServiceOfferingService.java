@@ -12,7 +12,7 @@ public interface ServiceOfferingService {
                                   ServiceDTO serviceDTO,
                                   CategoryDTO categoryDTO);
 
-    ServiceOffering updateService(Long serviceId,ServiceOffering service);
+    ServiceOffering updateService(Long serviceId,ServiceOffering service) throws Exception;
 
     Set<ServiceOffering> getAllServiceByStationId(Long stationId, Long categoryId);
 
