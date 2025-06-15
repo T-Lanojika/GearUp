@@ -32,4 +32,16 @@ public class StationServiceOfferingController {
 
         return  ResponseEntity.ok(serviceOfferings);
     }
+
+    @PostMapping
+    public ResponseEntity<ServiceOffering> updateService(
+            @PathVariable Long id,
+            @RequestBody ServiceOffering serviceOffering
+    ) throws Exception {
+
+        ServiceOffering serviceOfferings = serviceOfferingService
+                .updateService(id,serviceOffering);
+
+        return  ResponseEntity.ok(serviceOfferings);
+    }
 }
