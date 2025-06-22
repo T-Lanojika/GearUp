@@ -1,4 +1,4 @@
-package com.gearup.booking.service;
+package com.gearup;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
