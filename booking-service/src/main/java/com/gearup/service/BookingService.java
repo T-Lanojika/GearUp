@@ -1,11 +1,15 @@
 package com.gearup.service;
 
+import com.gearup.domain.BookingStatus;
 import com.gearup.dto.BookingRequest;
 import com.gearup.dto.ServiceDTO;
 import com.gearup.dto.StationDTO;
 import com.gearup.dto.UserDTO;
 import com.gearup.model.Booking;
+import com.gearup.model.StationReport;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 public interface BookingService {
@@ -14,4 +18,14 @@ public interface BookingService {
                           UserDTO ser,
                           StationDTO station,
                           Set<ServiceDTO> serviceDTOSet);
+
+    List<Booking> getBookingsByCustomer(Long customerId);
+    List<Booking> getBookingsByStation(Long stationId);
+    Booking getBookingById(Long id);
+    Booking updateBooking(Long bookingId, BookingStatus status);
+    List<Booking> getBookingsByDate(LocalDate date,Long stationId);
+    StationReport getStationReport(Long stationId);
+
+
+
 }
