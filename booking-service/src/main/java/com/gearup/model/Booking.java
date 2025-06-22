@@ -1,11 +1,15 @@
 package com.gearup.model;
 
+import com.gearup.domain.BookingStatus;
 import jakarta.persistence.*;
+import jdk.jfr.DataAmount;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@Data
 public class Booking {
 
     @Id
@@ -17,6 +21,6 @@ public class Booking {
     private LocalDateTime endTime;
     @ElementCollection
     private Set<Long> serviceIds;
-    private BookingStatus status;
+    private BookingStatus status = BookingStatus.PENDING;
     private int totalServices;
 }
