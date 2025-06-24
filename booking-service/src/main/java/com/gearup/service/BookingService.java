@@ -21,7 +21,7 @@ public interface BookingService {
 
     List<Booking> getBookingsByCustomer(Long customerId);
     List<Booking> getBookingsByStation(Long stationId);
-    Booking getBookingById(Long id);
+    Booking getBookingById(Long id) throws Exception;
     Booking updateBooking(Long bookingId, BookingStatus status);
     List<Booking> getBookingsByDate(LocalDate date,Long stationId);
     StationReport getStationReport(Long stationId);
