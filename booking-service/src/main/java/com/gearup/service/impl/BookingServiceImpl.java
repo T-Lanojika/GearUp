@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,13 +28,59 @@ public class BookingServiceImpl implements BookingService {
     public Booking createBooking(BookingRequest booking,
                                  UserDTO user,
                                  StationDTO station,
-                                 Set<ServiceDTO> serviceDTOSet) {
+                                 Set<ServiceDTO> serviceDTOSet) throws Exception {
         int totalDuration = serviceDTOSet.stream().mapToInt(ServiceDTO::getDuration).sum();
 
         LocalDateTime bookingStartTime = booking.getStartTime();
         LocalDateTime bookingEndTime = bookingStartTime.plusMinutes(totalDuration);
 
-        return null;
+        Boolean isSlotAvailable = isTimeSlotAvailable(station,bookingStartTime,bookingEndTime);
+
+        int totalPrice = serviceDTOSet.stream().mapToInt(ServiceDTO::getPrice).sum();
+
+        Set<Long> idList=serviceDTOSet.stream().map(ServiceDTO::getId).collect(Collectors.toSet());
+
+        Booking newBooking = new Booking();
+        newBooking.setCustomerId(user.getId());
+        newBooking.setStationId(user.getId());
+        newBooking.setServiceIds(idList);
+        newBooking.setStatus(BookingStatus.PENDING);
+        newBooking.setStartTime(bookingStartTime);
+        newBooking.setEndTime(bookingEndTime);
+        newBooking.setTotalPrice(totalPrice);
+
+
+        return bookingRepository.save(newBooking);
+    }
+
+    public Boolean isTimeSlotAvailable(StationDTO stationDTO,
+                                       LocalDateTime bookingStartTime,
+                                       LocalDateTime bookingEndTime) throws Exception {
+
+        List<Booking> existingBookings = getBookingsByStation(stationDTO.getId());
+        LocalDateTime stationOpenTime = stationDTO.getOpenTime().atDate(bookingStartTime.toLocalDate());
+        LocalDateTime stationCloseTime = stationDTO.getCloseTime().atDate(bookingStartTime.toLocalDate());
+
+        if(bookingStartTime.isBefore(stationOpenTime)
+                || bookingEndTime.isAfter(stationCloseTime)){
+            throw new Exception("Booking time must be within service station's working hours");
+
+        }
+
+        for(Booking existingBooking: existingBookings){
+            LocalDateTime existingBookingStartTime = existingBooking.getStartTime();
+            LocalDateTime existingBookingEndTime = existingBooking.getEndTime();
+
+            if(bookingStartTime.isBefore(existingBookingEndTime) && bookingEndTime.isAfter(existingBookingStartTime)){
+                throw new Exception("slot not available, choose different time.");
+            }
+
+            if(bookingStartTime.isEqual(existingBookingStartTime) || bookingEndTime.isEqual(existingBookingEndTime)){
+                throw new Exception("slot not available, choose different time.");
+            }
+        }
+
+        return true;
     }
 
     @Override
