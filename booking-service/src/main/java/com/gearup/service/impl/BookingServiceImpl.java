@@ -90,7 +90,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getBookingsByStation(Long stationId) {
-        return List.of();
+        return bookingRepository.findByStationId(stationId);
     }
 
     @Override
