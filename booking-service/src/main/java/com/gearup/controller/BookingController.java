@@ -1,6 +1,7 @@
 package com.gearup.controller;
 
 import com.gearup.dto.*;
+import com.gearup.mapper.BookingMapper;
 import com.gearup.model.Booking;
 import com.gearup.service.BookingService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -45,6 +48,24 @@ public class BookingController {
         return  ResponseEntity.ok(booking);
 
         }
+
+
+        @GetMapping("/customer")
+        public ResponseEntity<Set<BookingDTO>> getBookingByCustomer(
+
+        ){
+            List<Booking> bookings = bookingService.getBookingsByCustomer(1L);
+
+            return ResponseEntity.ok(getBookingDTOs(bookings));
+        }
+
+        private Set<BookingDTO> getBookingDTOs(List<Booking> bookings){
+        return  bookings.stream().map(booking -> {
+            return BookingMapper.toDTO(booking);
+        }).collect(Collectors.toSet());
+        }
+
+
 
 
 }
