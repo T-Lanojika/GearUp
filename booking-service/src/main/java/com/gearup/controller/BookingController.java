@@ -1,5 +1,6 @@
 package com.gearup.controller;
 
+import com.gearup.domain.BookingStatus;
 import com.gearup.dto.*;
 import com.gearup.mapper.BookingMapper;
 import com.gearup.model.Booking;
@@ -85,5 +86,15 @@ public class BookingController {
     }
 
 
+    @PutMapping("/{bookingId}/status")
+    public ResponseEntity<BookingDTO> updateBookingStatus(
+            @PathVariable Long bookingId,
+            @RequestParam BookingStatus status
+
+            )throws Exception{
+        Booking booking = bookingService.updateBooking(bookingId,status);
+
+        return ResponseEntity.ok(BookingMapper.toDTO(booking));
+    }
 
 }
