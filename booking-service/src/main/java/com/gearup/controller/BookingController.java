@@ -4,6 +4,7 @@ import com.gearup.domain.BookingStatus;
 import com.gearup.dto.*;
 import com.gearup.mapper.BookingMapper;
 import com.gearup.model.Booking;
+import com.gearup.model.StationReport;
 import com.gearup.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -114,6 +115,16 @@ public class BookingController {
         }).collect(Collectors.toList());
 
         return ResponseEntity.ok(slotDTOs);
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<StationReport> getStationReport(
+
+    )throws Exception{
+        StationReport report = bookingService.getStationReport(1L);
+
+
+        return ResponseEntity.ok(report);
     }
 
 }
