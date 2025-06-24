@@ -124,12 +124,30 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
-    private boolean isSameDate(LocalDateTime startTime, LocalDate date) {
-        return false;
+    private boolean isSameDate(LocalDateTime dateTime, LocalDate date) {
+        return dateTime.toLocalDate().isEqual(date);
     }
 
     @Override
     public StationReport getStationReport(Long stationId) {
-        return null;
+        List<Booking> bookings=getBookingsByStation(stationId);
+
+        int totalEarnings=bookings.stream().mapToInt(Booking::getTotalPrice).sum();
+
+        Integer totalBooking = bookings.size();
+
+        List<Booking> cancelledBookings=bookings.stream().filter(booking -> booking.getStatus().equals(BookingStatus.CANCELLED)).collect(Collectors.toList());
+
+        Double totalRefund = cancelledBookings.stream().mapToDouble(Booking::getTotalPrice).sum();
+
+        StationReport report=new StationReport();
+        report.setStationId(stationId);
+        report.setCancelledBooking(cancelledBookings.size());
+        report.setTotalBookings(totalEarnings);
+        report.setTotalEarnings(totalEarnings);
+        report.setTotalRefund(totalRefund);
+        report.setTotalBookings(totalBooking);
+
+        return report;
     }
 }
