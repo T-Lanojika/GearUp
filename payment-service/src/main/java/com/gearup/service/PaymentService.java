@@ -6,12 +6,13 @@ import com.gearup.payload.response.PaymentLinkResponse;
 import com.gearup.payload.response.dto.BookingDTO;
 import com.gearup.payload.response.dto.UserDTO;
 import com.razorpay.PaymentLink;
+import com.razorpay.RazorpayException;
 
 public interface PaymentService {
 
     PaymentLinkResponse createOrder(UserDTO user,
                                     BookingDTO booking,
-                                    PaymentMethod paymentMethod);
+                                    PaymentMethod paymentMethod) throws RazorpayException;
 
     PaymentOrder getPaymentOrderById(Long id) throws Exception;
 
@@ -19,7 +20,7 @@ public interface PaymentService {
 
     PaymentLink createRazorpayPaymentLink(UserDTO user,
                                           Long amount,
-                                          Long orderId);
+                                          Long orderId) throws RazorpayException;
 
     String createStripePaymentLink(UserDTO user,
                                           Long amount,

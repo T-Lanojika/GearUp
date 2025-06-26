@@ -8,7 +8,11 @@ import com.gearup.payload.response.dto.UserDTO;
 import com.gearup.repository.PaymentOrderRepository;
 import com.gearup.service.PaymentService;
 import com.razorpay.PaymentLink;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
+import com.stripe.v2.Amount;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Override
-    public PaymentLinkResponse createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod) {
+    public PaymentLinkResponse createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod) throws RazorpayException {
         Long amount = (long) booking.getTotalPrice();
 
         PaymentOrder order = new PaymentOrder();
@@ -82,8 +86,34 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentLink createRazorpayPaymentLink(UserDTO user, Long amount, Long orderId) {
-        return null;
+    public PaymentLink createRazorpayPaymentLink(UserDTO user, Long Amount, Long orderId) throws RazorpayException {
+        Long amount = Amount*100;
+
+        RazorpayClient razorpay = new RazorpayClient(razorpayApiKey,razorpayApiSecret);
+
+        JSONObject paymentLinkRequest = new JSONObject();
+        paymentLinkRequest.put("amount",amount);
+        paymentLinkRequest.put("currency","LKR");
+
+        JSONObject customer = new JSONObject();
+        customer.put("name",user.getFullName());
+        customer.put("email",user.getEmail());
+
+        paymentLinkRequest.put("customer",customer);
+
+        JSONObject notify = new JSONObject();
+        notify.put("email",true);
+
+        paymentLinkRequest.put("notify",notify);
+
+        paymentLinkRequest.put("reminder_enable",true);
+
+        //change url
+        paymentLinkRequest.put("callback_url","http://localhost:3000/payment-success/"+orderId);
+
+        paymentLinkRequest.put("callback_method","get");
+
+        return razorpay.paymentLink.create(paymentLinkRequest);
     }
 
     @Override
