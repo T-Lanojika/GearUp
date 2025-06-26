@@ -13,7 +13,7 @@ public interface PaymentService {
                                     BookingDTO booking,
                                     PaymentMethod paymentMethod);
 
-    PaymentOrder getPaymentOrderById(Long id);
+    PaymentOrder getPaymentOrderById(Long id) throws Exception;
 
     PaymentOrder getPaymentOrderByPaymentId(String paymentId);
 
