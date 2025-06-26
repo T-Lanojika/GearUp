@@ -42,7 +42,7 @@ public class BookingServiceImpl implements BookingService {
 
         Booking newBooking = new Booking();
         newBooking.setCustomerId(user.getId());
-        newBooking.setStationId(user.getId());
+        newBooking.setStationId(station.getId());
         newBooking.setServiceIds(idList);
         newBooking.setStatus(BookingStatus.PENDING);
         newBooking.setStartTime(bookingStartTime);
@@ -58,6 +58,7 @@ public class BookingServiceImpl implements BookingService {
                                        LocalDateTime bookingEndTime) throws Exception {
 
         List<Booking> existingBookings = getBookingsByStation(stationDTO.getId());
+
         LocalDateTime stationOpenTime = stationDTO.getOpenTime().atDate(bookingStartTime.toLocalDate());
         LocalDateTime stationCloseTime = stationDTO.getCloseTime().atDate(bookingStartTime.toLocalDate());
 
