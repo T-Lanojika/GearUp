@@ -1,6 +1,6 @@
 package com.gearup.payload.response.dto;
 
-import com.gearup.domain.BookingStatus;
+//import com.gearup.domain.BookingStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,6 +14,6 @@ public class BookingDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Set<Long> serviceIds;
-    private BookingStatus status = BookingStatus.PENDING;
+    //private BookingStatus status = BookingStatus.PENDING;
     private int totalPrice;
 }
