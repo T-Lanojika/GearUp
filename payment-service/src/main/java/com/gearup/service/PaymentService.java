@@ -21,7 +21,7 @@ public interface PaymentService {
                                           Long amount,
                                           Long orderId);
 
-    String createStringPaymentLink(UserDTO user,
+    String createStripePaymentLink(UserDTO user,
                                           Long amount,
                                           Long orderId);
 

@@ -30,8 +30,42 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentLinkResponse createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod) {
-        return null;
+        Long amount = (long) booking.getTotalPrice();
+
+        PaymentOrder order = new PaymentOrder();
+        order.setAmount(amount);
+        order.setPaymentMethod(paymentMethod);
+        order.setBookingId(booking.getId());
+        order.setStationId(booking.getStationId());
+        PaymentOrder savedOrder = paymentOrderRepository.save(order);
+
+        PaymentLinkResponse paymentLinkResponse = new PaymentLinkResponse();
+
+        if(paymentMethod.equals(PaymentMethod.RAZORPAY)){
+            PaymentLink payment = createRazorpayPaymentLink(user,
+                    savedOrder.getAmount(),
+                    savedOrder.getId());
+
+            String paymentUrl = payment.get("short_url");
+            String paymentUrlId = payment.get("id");
+
+            paymentLinkResponse.setPayment_link_url(paymentUrl);
+            paymentLinkResponse.setGetPayment_link_id(paymentUrlId);
+
+            savedOrder.setPaymentLinkId(paymentUrlId);
+
+            paymentOrderRepository.save(savedOrder);
+        }else{
+            String paymentUrl = createStripePaymentLink(user,
+                    savedOrder.getAmount(),
+                    savedOrder.getId());
+            paymentLinkResponse.setPayment_link_url(paymentUrl);
+        }
+
+        return paymentLinkResponse;
     }
+
+
 
     @Override
     public PaymentOrder getPaymentOrderById(Long id) {
@@ -49,7 +83,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public String createStringPaymentLink(UserDTO user, Long amount, Long orderId) {
+    public String createStripePaymentLink(UserDTO user, Long amount, Long orderId) {
         return "";
     }
 }
