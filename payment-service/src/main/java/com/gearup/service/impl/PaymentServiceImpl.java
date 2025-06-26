@@ -1,12 +1,14 @@
 package com.gearup.service.impl;
 
 import com.gearup.domain.PaymentMethod;
+import com.gearup.domain.PaymentOrderStatus;
 import com.gearup.model.PaymentOrder;
 import com.gearup.payload.response.PaymentLinkResponse;
 import com.gearup.payload.response.dto.BookingDTO;
 import com.gearup.payload.response.dto.UserDTO;
 import com.gearup.repository.PaymentOrderRepository;
 import com.gearup.service.PaymentService;
+import com.razorpay.Payment;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -148,5 +150,34 @@ public class PaymentServiceImpl implements PaymentService {
         Session session=Session.create(params);
 
         return session.getUrl();
+    }
+
+    @Override
+    public Boolean proceedPayment(PaymentOrder paymentOrder,
+                                  String paymentId,
+                                  String paymentLinkId) throws RazorpayException {
+        if(paymentOrder.getStatus().equals(PaymentOrderStatus.PENDING)){
+            if(paymentOrder.getPaymentMethod().equals(PaymentMethod.RAZORPAY)){
+                RazorpayClient razorpay=new RazorpayClient(razorpayApiKey,razorpayApiSecret);
+
+                Payment payment= razorpay.payments.fetch(paymentId);
+                Integer amount=payment.get("amount");
+                String status=payment.get("status");
+
+                if(status.equals("captured")){
+        //            produce kafka event
+                    paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
+                    paymentOrderRepository.save(paymentOrder);
+                    return  true;
+                }
+                return false;
+            }
+            else{
+                paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
+                paymentOrderRepository.save(paymentOrder);
+                return  true;
+            }
+        }
+        return false;
     }
 }
